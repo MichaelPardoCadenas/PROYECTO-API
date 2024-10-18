@@ -12,7 +12,9 @@ def home():
 @require_apikey  
 def get_jugadores():
     id_equipo = request.args.get('id_equipo')
-    jugadores = obtener_jugadores(id_equipo)
+    posicion = request.args.get('posicion')
+    edad = request.args.get('edad')
+    jugadores = obtener_jugadores(id_equipo, posicion, edad)
     return jsonify(jugadores)
 
 @app.route("/equipos", methods=['GET'])

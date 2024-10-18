@@ -11,19 +11,31 @@ def crear_conexion():
         )
 
 
-def obtener_jugadores(id_equipo=None):
+def obtener_jugadores(id_equipo=None, posicion=None, edad=None):
         connection = crear_conexion()
         cursor = connection.cursor(dictionary=True)
 
-        if id_equipo:
-                cursor.execute("SELECT nombre, id_equipo, edad, posicion FROM jugadores WHERE id_equipo = %s", (id_equipo,))
-        else:
-                cursor.execute("SELECT nombre, id_equipo, edad, posicion FROM jugadores")
+        query = "SELECT nombre, id_equipo, edad, posicion FROM jugadores WHERE 1=1"
+        params = []
 
+        if id_equipo:
+                query += " AND id_equipo = %s"
+                params.append(id_equipo)
+
+        if posicion:
+                query += " AND posicion = %s"
+                params.append(posicion)
+        
+        if edad:
+                query += " AND edad = %s"
+                params.append(edad)
+
+        cursor.execute(query, tuple(params))
         data = cursor.fetchall()
         cursor.close()
         connection.close()
         return data
+
 
 
 def obtener_equipos():
